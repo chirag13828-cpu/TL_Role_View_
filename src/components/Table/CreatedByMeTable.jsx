@@ -24,15 +24,15 @@ const CreatedByMeTable = () => {
   return (
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
       {/* Table Header */}
-      <div className="grid grid-cols-[1.2fr_2fr_1fr_1.5fr_1.2fr_1.2fr_1.2fr_1.2fr] gap-4 px-6 border-b border-gray-100 text-[10px] font-bold text-gray-500 tracking-wider bg-gray-50/50 h-[26px] items-center">
-        <div className="uppercase whitespace-nowrap text-left leading-none">ID</div>
-        <div className="uppercase text-left leading-none">Customer Name</div>
-        <div className="uppercase text-left leading-none">Category</div>
-        <div className="uppercase text-left leading-none">Assigned To</div>
-        <div className="uppercase text-left leading-none">Assigned Lob</div>
-        <div className="uppercase text-left leading-none">Assigned On</div>
-        <div className="uppercase text-left leading-none">SLA</div>
-        <div className="uppercase text-left leading-none">Status</div>
+      <div className="grid grid-cols-[1fr_2fr_1fr_1.5fr_1.2fr_1.2fr_1.2fr_1.5fr] gap-4 px-6 border-b border-gray-100 text-[10px] font-bold text-gray-500 tracking-wider bg-gray-50/50 h-[26px] items-center">
+        <div className="uppercase whitespace-nowrap text-left leading-none flex items-center">ID</div>
+        <div className="uppercase text-left leading-none flex items-center">Customer Name</div>
+        <div className="uppercase text-left leading-none flex items-center">Category</div>
+        <div className="uppercase text-left leading-none flex items-center">Assigned To</div>
+        <div className="uppercase text-left leading-none flex items-center">Assigned Lob</div>
+        <div className="uppercase text-left leading-none flex items-center">Assigned On</div>
+        <div className="uppercase text-left leading-none flex items-center">SLA</div>
+        <div className="uppercase text-left leading-none flex items-center">Status</div>
       </div>
 
       {/* Table Body */}

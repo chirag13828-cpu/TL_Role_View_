@@ -25,12 +25,12 @@ const JunkTable = () => {
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
       {/* Table Header */}
       <div className="grid grid-cols-[1.2fr_2fr_0.8fr_4fr_1fr_1.5fr] gap-4 px-6 border-b border-gray-100 text-[10px] font-bold text-gray-500 tracking-wider bg-gray-50/50 h-[26px] items-center">
-        <div className="uppercase whitespace-nowrap text-left leading-none">ID</div>
-        <div className="uppercase text-left leading-none">Customer Name</div>
-        <div className="uppercase text-left leading-none">Channel</div>
-        <div className="uppercase">Subject Line</div>
-        <div className="uppercase">Category</div>
-        <div className="uppercase">Assigned To</div>
+        <div className="uppercase whitespace-nowrap text-left leading-none flex items-center">ID</div>
+        <div className="uppercase text-left leading-none flex items-center">Customer Name</div>
+        <div className="uppercase text-left leading-none flex items-center">Channel</div>
+        <div className="uppercase text-left leading-none flex items-center">Subject Line</div>
+        <div className="uppercase text-left leading-none flex items-center">Category</div>
+        <div className="uppercase text-left leading-none flex items-center">Assigned To</div>
       </div>
 
       {/* Table Body */}

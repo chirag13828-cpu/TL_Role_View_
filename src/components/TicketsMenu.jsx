@@ -12,7 +12,7 @@ const menuItems = [
 
 const TicketsMenu = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="w-56 border-r border-gray-200 bg-white flex flex-col shrink-0">
+    <div className="w-48 border-r border-gray-200 bg-white flex flex-col shrink-0">
       <div className="p-4 pt-5 pb-2">
         <h2 className="text-blue-500 font-extrabold text-base tracking-wide">Tickets</h2>
       </div>
@@ -24,7 +24,7 @@ const TicketsMenu = ({ activeTab, setActiveTab }) => {
             <button
               key={item}
               onClick={() => setActiveTab(item)}
-              className={`text-left px-3 py-1.5 text-sm rounded transition-colors duration-200 ${
+              className={`text-left px-3 py-1.5 text-sm rounded transition-colors duration-200 whitespace-nowrap truncate ${
                 isActive 
                   ? 'bg-[#ebf5ff] text-blue-600 font-medium' 
                   : 'text-gray-500 hover:bg-gray-50 hover:text-blue-500'

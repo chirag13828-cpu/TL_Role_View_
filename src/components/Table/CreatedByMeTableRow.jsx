@@ -26,21 +26,27 @@ const CreatedByMeTableRow = ({ ticket, index }) => {
   const openUpwards = index >= 5;
 
   return (
-    <div className="grid grid-cols-[1.2fr_2fr_1fr_1.5fr_1.2fr_1.2fr_1.2fr_1.2fr] gap-4 px-6 border-b border-gray-100 items-center text-[13px] bg-white hover:bg-[#ebf5ff] transition-colors duration-200 cursor-pointer h-[36px] overflow-visible">
-      <div className="text-gray-600 font-medium whitespace-nowrap text-left leading-none">{ticket.id}</div>
-      <div className="text-gray-800 truncate pr-2 text-left leading-none">{ticket.customer}</div>
-      <div className="flex justify-start items-center leading-none"><CategoryBadge type={ticket.category} /></div>
-      <div className="relative overflow-visible">
+    <div className="grid grid-cols-[1fr_2fr_1fr_1.5fr_1.2fr_1.2fr_1.2fr_1.5fr] gap-4 px-6 border-b border-gray-100 items-center text-[13px] bg-white hover:bg-[#ebf5ff] transition-colors duration-200 cursor-pointer h-[36px] overflow-visible whitespace-nowrap">
+      <div className="text-gray-600 font-medium whitespace-nowrap text-left leading-none truncate shrink-0">{ticket.id}</div>
+      <div className="text-gray-800 truncate pr-2 text-left leading-none shrink-0">{ticket.customer}</div>
+      <div className="shrink-0 flex justify-start leading-none"><CategoryBadge type={ticket.category} /></div>
+      <div className="relative overflow-visible whitespace-nowrap shrink-0 text-left leading-none">
         <button 
           onClick={(e) => {
             e.stopPropagation();
             setShowDropdown(!showDropdown);
           }}
-          className="flex items-center gap-1.5 text-gray-800 font-medium hover:text-blue-600 transition-colors"
+          className={`flex items-center gap-1.5 transition-colors whitespace-nowrap p-0 border-none bg-transparent ${
+            !currentAgent ? 'text-gray-400 font-medium hover:text-gray-600' : 'text-gray-900 font-bold'
+          }`}
         >
-          <UserPlus size={16} className="text-gray-800" />
-          <span className="text-[13px]">{currentAgent}</span>
-          <ChevronDown size={14} className={`ml-0.5 transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
+          <UserPlus size={16} className={`${currentAgent ? 'text-gray-900' : 'text-gray-400'} shrink-0`} />
+          <span className="text-[13px] whitespace-nowrap leading-none">
+            {currentAgent 
+              ? (currentAgent.length > 8 ? currentAgent.substring(0, 8) + '...' : currentAgent) 
+              : 'Assign to...'}
+          </span>
+          <ChevronDown size={14} className={`ml-0.5 transition-transform duration-200 shrink-0 ${showDropdown ? 'rotate-180' : ''}`} />
         </button>
         {showDropdown && (
           <AgentDropdown 
@@ -51,10 +57,10 @@ const CreatedByMeTableRow = ({ ticket, index }) => {
           />
         )}
       </div>
-      <div className="text-gray-600 text-left leading-none">{ticket.assignedLob}</div>
-      <div className="text-gray-600 text-xs text-left leading-none">{ticket.assignedOn}</div>
-      <div className="text-gray-600 text-xs text-left leading-none">{ticket.sla}</div>
-      <div className="flex justify-start items-center leading-none"><StatusBadge type={ticket.status} /></div>
+      <div className="text-gray-600 text-left leading-none truncate shrink-0">{ticket.assignedLob}</div>
+      <div className="text-gray-600 text-xs text-left leading-none truncate shrink-0">{ticket.assignedOn}</div>
+      <div className="text-gray-600 text-xs text-left leading-none truncate shrink-0">{ticket.sla}</div>
+      <div className="flex justify-start items-center leading-none shrink-0"><StatusBadge type={ticket.status} /></div>
     </div>
   );
 };
