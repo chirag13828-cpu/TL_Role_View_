@@ -17,7 +17,7 @@ const TeamTableRow = ({ member, isEven }) => {
   return (
     <div 
       className={`grid gap-4 px-6 border-b border-gray-100 items-center text-[13px] transition-colors duration-200 cursor-pointer h-[36px] ${isEven ? 'bg-[#f9fafb]' : 'bg-white'} hover:bg-[#ebf5ff]`}
-      style={{ gridTemplateColumns: '2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.2fr' }}
+      style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr' }}
     >
       <div className="text-gray-800 font-medium truncate pr-2 text-left leading-none">{member.name}</div>
       <div className="text-gray-600 text-left leading-none">{member.availableSince}</div>

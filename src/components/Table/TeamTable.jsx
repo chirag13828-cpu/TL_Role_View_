@@ -27,7 +27,7 @@ const TeamTable = () => {
       {/* Table Header */}
       <div 
         className="grid gap-4 px-6 border-b border-gray-100 text-[10px] font-bold text-gray-500 tracking-wider bg-gray-50/50 h-[26px] items-center"
-        style={{ gridTemplateColumns: '2fr 1.5fr 1.5fr 1.5fr 1fr 1fr 1.2fr' }}
+        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr 1fr 1fr' }}
       >
         <div className="uppercase text-left leading-none">Team Member</div>
         <div className="uppercase text-left leading-none">Available Since</div>
