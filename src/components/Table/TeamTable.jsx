@@ -16,11 +16,23 @@ const teamData = [
   { id: 10, name: 'Mahesh Acharya', availableSince: '08:47 AM', breakSince: '08:47 AM', loginTime: '08:47 AM', status: 'active', currentTickets: '06', productivity: '13' },
 ];
 
-const TeamTable = () => {
+const TeamTable = ({ filters }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // Apply Filtering
+  const filteredData = teamData.filter(member => {
+    const matchesSearch = !filters?.search || 
+      member.name.toLowerCase().includes(filters.search.toLowerCase());
+    
+    const matchesStatus = !filters?.status || filters.status === 'All Status' || 
+      member.status.toLowerCase() === filters.status.toLowerCase();
+
+    return matchesSearch && matchesStatus;
+  });
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentMembers = teamData.slice(startIndex, startIndex + itemsPerPage);
+  const currentMembers = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
@@ -42,14 +54,21 @@ const TeamTable = () => {
 
       {/* Table Body */}
       <div className="flex-1 overflow-hidden">
-        {currentMembers.map((member, index) => (
-          <TeamTableRow key={member.id} member={member} isEven={index % 2 !== 0} />
-        ))}
+        {currentMembers.length > 0 ? (
+          currentMembers.map((member, index) => (
+            <TeamTableRow key={member.id} member={member} isEven={index % 2 !== 0} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
+            <p className="text-sm font-medium">No team members found matching your filters</p>
+            <p className="text-xs italic">Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
       <Pagination 
-        totalItems={teamData.length} 
+        totalItems={filteredData.length} 
         currentPage={currentPage} 
         onPageChange={setCurrentPage} 
       />

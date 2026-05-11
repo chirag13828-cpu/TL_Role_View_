@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TeamFilterBar from './TeamFilterBar';
 import TeamTable from './Table/TeamTable';
 
 const TeamView = () => {
+  const [filters, setFilters] = useState({
+    search: '',
+    status: 'All Status'
+  });
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
   return (
     <div className="flex-1 flex flex-col bg-white overflow-hidden px-8 pt-3 pb-2 animate-in fade-in duration-500 absolute inset-0">
       <div className="mb-6">
@@ -11,8 +20,8 @@ const TeamView = () => {
           Monitor today's team performance
         </p>
       </div>
-      <TeamFilterBar />
-      <TeamTable />
+      <TeamFilterBar onFilterChange={handleFilterChange} />
+      <TeamTable filters={filters} />
     </div>
   );
 };

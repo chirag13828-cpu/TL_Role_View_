@@ -15,11 +15,27 @@ const createdTicketsData = [
   { id: 'TCK1234BCP', customer: 'Mahesh Acharya', category: 'REFUND', assignedTo: 'Madhu DL', assignedLob: 'Clothing', assignedOn: '24/04/26 10:26', sla: '25/04/26 10:26', status: 'COMPLETED' },
 ];
 
-const CreatedByMeTable = () => {
+const CreatedByMeTable = ({ filters }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // Apply Filtering
+  const filteredData = createdTicketsData.filter(ticket => {
+    const matchesSearch = !filters?.search || 
+      ticket.customer.toLowerCase().includes(filters.search.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(filters.search.toLowerCase());
+    
+    const matchesCategory = !filters?.category || filters.category === 'All Categories' || 
+      ticket.category.toUpperCase() === filters.category.toUpperCase();
+    
+    const matchesStatus = !filters?.status || filters.status === 'All Status' || 
+      ticket.status.toUpperCase() === filters.status.toUpperCase();
+
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTickets = createdTicketsData.slice(startIndex, startIndex + itemsPerPage);
+  const currentTickets = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
@@ -37,14 +53,21 @@ const CreatedByMeTable = () => {
 
       {/* Table Body */}
       <div className="flex-1 overflow-visible">
-        {currentTickets.map((ticket, index) => (
-          <CreatedByMeTableRow key={ticket.id} ticket={ticket} index={index} />
-        ))}
+        {currentTickets.length > 0 ? (
+          currentTickets.map((ticket, index) => (
+            <CreatedByMeTableRow key={ticket.id} ticket={ticket} index={index} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
+            <p className="text-sm font-medium">No tickets found matching your filters</p>
+            <p className="text-xs italic">Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
       <Pagination 
-        totalItems={createdTicketsData.length} 
+        totalItems={filteredData.length} 
         currentPage={currentPage} 
         onPageChange={setCurrentPage} 
       />

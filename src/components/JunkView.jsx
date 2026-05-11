@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FilterBar from './FilterBar';
 import JunkTable from './Table/JunkTable';
 
 const JunkView = () => {
+  const [filters, setFilters] = useState({
+    search: '',
+    category: 'All Categories'
+  });
+
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+  };
+
   return (
     <div className="flex-1 flex flex-col bg-white overflow-hidden px-8 pt-3 pb-2 animate-in fade-in duration-500 absolute inset-0">
       <div className="mb-6">
@@ -11,8 +20,8 @@ const JunkView = () => {
           Check all the junk tickets currently in the system
         </p>
       </div>
-      <FilterBar />
-      <JunkTable />
+      <FilterBar onFilterChange={handleFilterChange} />
+      <JunkTable filters={filters} />
     </div>
   );
 };

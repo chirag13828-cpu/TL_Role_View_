@@ -24,15 +24,13 @@ const Metric = ({ value }) => {
 
 const CompletedByMeTableRow = ({ ticket }) => {
   return (
-    <div className="grid grid-cols-[1.2fr_2.5fr_1.2fr_1.5fr_1.5fr_1.5fr_1fr_1fr] gap-4 px-6 border-b border-gray-100 items-center text-[13px] bg-white hover:bg-[#ebf5ff] transition-colors duration-200 cursor-pointer h-[36px]">
+    <div className="grid grid-cols-[1.2fr_2.5fr_1.2fr_1.5fr_1.5fr_1.5fr] gap-4 px-6 border-b border-gray-100 items-center text-[13px] bg-white hover:bg-[#ebf5ff] transition-colors duration-200 cursor-pointer h-[36px]">
       <div className="text-gray-600 font-medium whitespace-nowrap text-left leading-none">{ticket.id}</div>
       <div className="text-gray-800 truncate pr-2 text-left leading-none">{ticket.customer}</div>
       <div className="flex justify-start items-center leading-none"><CategoryBadge type={ticket.category} /></div>
       <div className="text-gray-600 text-xs">{ticket.assignedOn}</div>
       <div className="text-gray-600 text-xs">{ticket.completedOn}</div>
       <div className="text-gray-600 text-xs">{ticket.sla}</div>
-      <div><Metric value={ticket.qc} /></div>
-      <div><Metric value={ticket.csat} /></div>
     </div>
   );
 };

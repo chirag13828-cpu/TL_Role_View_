@@ -16,11 +16,24 @@ const completedTicketsData = [
   { id: 'TCK1234BCP', customer: 'Mahesh Acharya', channel: 'mail', category: 'REFUND', assignedTo: 'Madhu DL', assignedOn: '24/04/26 10:26', resolvedOn: '24/04/26 12:26', trt: '02:00:00' },
 ];
 
-const CompletedTable = () => {
+const CompletedTable = ({ filters }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // Apply Filtering
+  const filteredData = completedTicketsData.filter(ticket => {
+    const matchesSearch = !filters?.search || 
+      ticket.customer.toLowerCase().includes(filters.search.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(filters.search.toLowerCase());
+    
+    const matchesCategory = !filters?.category || filters.category === 'All Categories' || 
+      ticket.category.toUpperCase() === filters.category.toUpperCase();
+
+    return matchesSearch && matchesCategory;
+  });
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTickets = completedTicketsData.slice(startIndex, startIndex + itemsPerPage);
+  const currentTickets = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
@@ -40,14 +53,21 @@ const CompletedTable = () => {
 
       {/* Table Body */}
       <div className="flex-1 overflow-visible">
-        {currentTickets.map((ticket, index) => (
-          <CompletedTableRow key={ticket.id} ticket={ticket} index={index} />
-        ))}
+        {currentTickets.length > 0 ? (
+          currentTickets.map((ticket, index) => (
+            <CompletedTableRow key={ticket.id} ticket={ticket} index={index} />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
+            <p className="text-sm font-medium">No tickets found matching your filters</p>
+            <p className="text-xs italic">Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
       <Pagination 
-        totalItems={completedTicketsData.length} 
+        totalItems={filteredData.length} 
         currentPage={currentPage} 
         onPageChange={setCurrentPage} 
       />

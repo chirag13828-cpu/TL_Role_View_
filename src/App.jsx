@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar';
 import TicketsMenu from './components/TicketsMenu';
 import MainHeader from './components/MainHeader';
 import FilterBar from './components/FilterBar';
-import TicketTable from './components/Table/TicketTable';
+import TicketTable, { initialTicketsData } from './components/Table/TicketTable';
 import PendingView from './components/PendingView';
 import CompletedView from './components/CompletedView';
 import JunkView from './components/JunkView';
@@ -13,10 +13,33 @@ import CompletedByMeView from './components/CompletedByMeView';
 import TeamView from './components/TeamView';
 import MaintenanceView from './components/MaintenanceView';
 import PerformanceDashboard from './components/PerformanceDashboard';
+import Toast from './components/Toast';
 
 function App() {
   const [activeApp, setActiveApp] = useState('Tickets');
   const [activeTab, setActiveTab] = useState('Unassigned');
+  const [unassignedTickets, setUnassignedTickets] = useState(initialTicketsData);
+  const [unassignedFilters, setUnassignedFilters] = useState({
+    search: '',
+    category: 'All Categories'
+  });
+
+  const [toast, setToast] = useState(null);
+
+  const handleUnassignedFilterChange = (key, value) => {
+    setUnassignedFilters(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleAssign = (ticketId, agent) => {
+    // Remove the ticket from unassigned list when assigned
+    setUnassignedTickets(prev => prev.filter(t => t.id !== ticketId));
+    
+    // Show toast notification
+    setToast({
+      message: `Ticket ${ticketId} has been successfully assigned to ${agent}.`,
+      type: 'success'
+    });
+  };
 
   return (
     <div className="flex flex-col h-screen overflow-hidden font-sans text-gray-800 bg-white">
@@ -41,8 +64,12 @@ function App() {
               {activeTab === 'Unassigned' && (
                 <div className="flex-1 flex flex-col overflow-hidden px-8 pt-3 pb-2 animate-in fade-in slide-in-from-right-4 duration-500 absolute inset-0">
                   <MainHeader />
-                  <FilterBar />
-                  <TicketTable />
+                  <FilterBar onFilterChange={handleUnassignedFilterChange} />
+                  <TicketTable 
+                    filters={unassignedFilters} 
+                    data={unassignedTickets}
+                    onAssign={handleAssign}
+                  />
                 </div>
               )}
 
@@ -91,6 +118,14 @@ function App() {
           )}
         </div>
       </div>
+
+      {toast && (
+        <Toast 
+          message={toast.message} 
+          type={toast.type} 
+          onClose={() => setToast(null)} 
+        />
+      )}
     </div>
   );
 }

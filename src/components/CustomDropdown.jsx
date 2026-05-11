@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-const CustomDropdown = ({ options, defaultValue, label }) => {
+const CustomDropdown = ({ options, defaultValue, label, onChange }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState(defaultValue || options[0]);
   const dropdownRef = useRef(null);
@@ -34,6 +34,7 @@ const CustomDropdown = ({ options, defaultValue, label }) => {
               onClick={() => {
                 setSelected(option);
                 setIsOpen(false);
+                if (onChange) onChange(option);
               }}
               className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 ${
                 selected === option ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-slate-600 hover:bg-slate-50'

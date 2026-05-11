@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TableRow from './TableRow';
 import Pagination from './Pagination';
 
-const ticketsData = [
+export const initialTicketsData = [
   { id: 'TCK1234BCG', customer: 'Satya Narayan Panda', channel: 'mail', subject: 'Requesting a refund on my recent order due to...', category: 'REFUND', wait: '06:13', assignee: { name: 'Goutham GS' } },
   { id: 'TCK1234BCH', customer: 'Ankitha HM', channel: 'mail', subject: 'Requesting a refund on my recent order due to...', category: 'REFUND', wait: '06:13', assignee: { unassigned: true } },
   { id: 'TCK1234BCI', customer: 'Vishnu RR', channel: 'phone', subject: 'Information request call', category: 'INFO', wait: '06:13', assignee: { unassigned: true } },
@@ -15,11 +15,24 @@ const ticketsData = [
   { id: 'TCK1234BCP', customer: 'Mahesh Acharya', channel: 'mail', subject: 'Requesting a refund on my recent order due to...', category: 'REFUND', wait: '06:13', assignee: { unassigned: true } },
 ];
 
-const TicketTable = () => {
+const TicketTable = ({ filters, data = initialTicketsData, onAssign }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  // Apply Filtering
+  const filteredData = data.filter(ticket => {
+    const matchesSearch = !filters?.search || 
+      ticket.customer.toLowerCase().includes(filters.search.toLowerCase()) ||
+      ticket.id.toLowerCase().includes(filters.search.toLowerCase());
+    
+    const matchesCategory = !filters?.category || filters.category === 'All Categories' || 
+      ticket.category.toUpperCase() === filters.category.toUpperCase();
+
+    return matchesSearch && matchesCategory;
+  });
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentTickets = ticketsData.slice(startIndex, startIndex + itemsPerPage);
+  const currentTickets = filteredData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="flex flex-col flex-1 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden mb-2">
@@ -36,14 +49,26 @@ const TicketTable = () => {
 
       {/* Table Body */}
       <div className="flex-1 overflow-visible">
-        {currentTickets.map((ticket, index) => (
-          <TableRow key={ticket.id} ticket={ticket} index={index} />
-        ))}
+        {currentTickets.length > 0 ? (
+          currentTickets.map((ticket, index) => (
+            <TableRow 
+              key={ticket.id} 
+              ticket={ticket} 
+              index={index} 
+              onAssign={(agent) => onAssign && onAssign(ticket.id, agent)}
+            />
+          ))
+        ) : (
+          <div className="flex flex-col items-center justify-center py-20 text-slate-400 gap-2">
+            <p className="text-sm font-medium">No tickets found matching your filters</p>
+            <p className="text-xs italic">Try adjusting your search or filters</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
       <Pagination 
-        totalItems={ticketsData.length} 
+        totalItems={filteredData.length} 
         currentPage={currentPage} 
         onPageChange={setCurrentPage} 
       />

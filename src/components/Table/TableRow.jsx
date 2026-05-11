@@ -25,7 +25,7 @@ const ChannelIcon = ({ type }) => {
   }
 };
 
-const AssignedTo = ({ assignee, openUpwards }) => {
+const AssignedTo = ({ assignee, openUpwards, onAssign }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [currentAgent, setCurrentAgent] = useState(assignee.unassigned ? null : assignee.name);
 
@@ -52,7 +52,10 @@ const AssignedTo = ({ assignee, openUpwards }) => {
       {showDropdown && (
         <AgentDropdown 
           currentAgent={currentAgent}
-          onSelect={(agent) => setCurrentAgent(agent)}
+          onSelect={(agent) => {
+            setCurrentAgent(agent);
+            if (onAssign) onAssign(agent);
+          }}
           onClose={() => setShowDropdown(false)}
           openUpwards={openUpwards}
         />
@@ -61,7 +64,7 @@ const AssignedTo = ({ assignee, openUpwards }) => {
   );
 };
 
-const TableRow = ({ ticket, index }) => {
+const TableRow = ({ ticket, index, onAssign }) => {
   const openUpwards = index >= 5; // Open upwards for the last few rows to stay inside the card
 
   return (
@@ -72,7 +75,9 @@ const TableRow = ({ ticket, index }) => {
       <div className="text-gray-700 truncate pr-4 text-left leading-none shrink-0">{ticket.subject}</div>
       <div className="shrink-0 flex justify-start leading-none"><Badge type={ticket.category} /></div>
       <div className="text-gray-800 whitespace-nowrap text-left leading-none shrink-0">{ticket.wait}</div>
-      <div className="overflow-visible whitespace-nowrap text-left leading-none"><AssignedTo assignee={ticket.assignee} openUpwards={openUpwards} /></div>
+      <div className="overflow-visible whitespace-nowrap text-left leading-none">
+        <AssignedTo assignee={ticket.assignee} openUpwards={openUpwards} onAssign={onAssign} />
+      </div>
     </div>
   );
 };
